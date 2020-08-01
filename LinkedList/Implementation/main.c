@@ -1,14 +1,14 @@
 #include "stdio.h"
 #include "stdlib.h"
 
-// linked-list node struct definition
+// node structure definition
 struct node {
     int data;
-    NODE* next;
+    struct node* next;
 };
 typedef struct node NODE;
 
-// linked-list definition
+// linked-list structure definition
 struct list {
     NODE* phead;
     NODE* ptail;
@@ -24,9 +24,19 @@ NODE* newNode(int data) {
 };
 
 // Linked-list initialize
-void init(LIST* l) {
+// Return 0 if linked-list is successfully initialized
+// Return -1 if linked-list is already initialized
+int init(LIST* l) {
+    // If linked-list is NULL then allocate memory for linked-list
+    if (l == NULL) {
+        l = (LIST*) malloc(sizeof(LIST));
+    }
+    if (l->phead != NULL) {
+        return -1;
+    }
     l->phead = NULL;
     l->ptail = NULL;
+    return 0;
 };
 
 // push a node into a linked-list
@@ -53,7 +63,38 @@ int push(LIST* l,NODE* node) {
     return -1;
 }
 
+void travel(LIST* l) {
+    if (l != NULL) {
+        if (l->phead == l->ptail) {
+            printf("%d", l->phead->data);
+        } else {
+            NODE* n = l->phead;
+            while(n != NULL) {
+                printf("%d", n->data);
+                n = n->next;
+            }
+        }
+    }
+}
+
 int main() {
-    
-    return 0;    
+    LIST* l;
+    NODE* n1 = newNode(20);
+    NODE* n2 = newNode(30);
+    NODE* n3 = newNode(40);
+    int initResult = init(l);
+    if (initResult == 0) {
+        push(l, n1);
+        push(l, n2);
+        push(l, n3);
+        travel(l);
+    } else {
+        printf("Linked-list is already initialized\n");
+        return 1;
+    }
+    free(l);
+    free(n1);
+    free(n2);
+    free(n3);
+    return 0;
 }
