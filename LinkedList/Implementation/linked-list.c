@@ -2,39 +2,47 @@
 #include "stdlib.h"
 #include "linked-list.h"
 
-static struct LinkedList newList()
+static struct LinkedList* newList()
 {
-    return (struct LinkedList) {
-        .phead=NULL,
-        .ptail=NULL,
-    };
+    struct LinkedList* newList =
+        (struct LinkedList*) malloc(sizeof(LinkedList));
+    newList->phead = NULL;
+    newList->ptail = NULL;
+    return newList;
 }
 
 static int push(struct LinkedList* this,int data)
 {
-    struct ListNode newNode = ListNode.newNode(data);
-    if (this->phead == this->ptail) {
-        this->phead->next = &newNode;
-        this->ptail = &newNode;
+    struct ListNode* newNode = ListNode.newNode(data);
+    if (this->phead == NULL) {
+        this->phead = newNode;
+        this->ptail = newNode;
     } else {
-        struct ListNode* temp = this->ptail;
-        temp->next = &newNode;
-        this->ptail = &newNode;
-        free(temp);
+        if (this->phead == this->ptail) {
+            this->phead->next = newNode;
+            this->ptail = newNode;
+            this->ptail->prev = this->phead;
+        } else {
+            this->ptail->next = newNode;
+            newNode->prev = this->ptail;
+            this->ptail = newNode;
+        }
     }
-    return 0;
+    return 1;
 }
 
 static void travel(struct LinkedList* this)
 {
     if (this != NULL) {
+        if (this->phead != NULL) {
         if (this->phead == this->ptail) {
             printf("%d", this->phead->value);
         } else {
             struct ListNode* t = this->phead;
-            while(t != NULL) {
-                printf("%d\n", t->value);
-                t = t->next;
+                while(t != NULL) {
+                    printf("%d\n", t->value);
+                    t = t->next;
+                }
             }
         }
     }
@@ -54,5 +62,7 @@ static int freeList(struct LinkedList* this)
 const struct LinkedListClass LinkedList =
 {
     .newList=&newList,
-    .push=&push
+    .push=&push,
+    .travel=&travel,
+    .freeList=&freeList,
 };
