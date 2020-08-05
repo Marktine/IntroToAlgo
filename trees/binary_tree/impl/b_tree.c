@@ -8,6 +8,16 @@ static struct b_tree newTree() {
     };
 };
 
-const struct b_tree_class b_tree={
-    .newTree=&newTree
+static int getHeight(struct b_tree* this) {
+   return this->height;
+}
+
+static int getLevel(struct b_tree* this) {
+    return this->levels;
+}
+
+const struct b_tree_class b_tree= {
+    .newTree=&newTree,
+    .getHeight=&getHeight,
+    .getLevel=&getLevel
 };

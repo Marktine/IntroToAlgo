@@ -12,7 +12,10 @@ struct b_tree {
 };
 
 extern const struct b_tree_class {
+    // public:
     struct b_tree (*newTree)();
+    int (*getLevel)(struct b_tree* this);
+    int (*getHeight)(struct b_tree* this);
 } b_tree;
 
 #endif
