@@ -3,8 +3,8 @@ A small repository, where i push my solution to some algorithm problems.
 
 ### Implemented data structures
 
-- [x] Linked-list
+- [ ] Linked-list (WIP)
 - [x] Queue
-- [x] Binary tree
-- [] Binary Search Tree
-- [] Stack
+- [ ] Binary tree (WIP)
+- [ ] Binary Search Tree
+- [ ] Stack
