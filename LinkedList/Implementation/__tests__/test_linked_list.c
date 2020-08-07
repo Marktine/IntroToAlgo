@@ -13,6 +13,7 @@ int main() {
         // push 3rd item and more
         LinkedList.push(l, 40);
         LinkedList.travel(l);
+        LinkedList.freeList(l);
     } else {
         printf("cannot init linked-list");
     }

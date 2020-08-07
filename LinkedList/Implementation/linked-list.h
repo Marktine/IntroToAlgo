@@ -23,8 +23,10 @@ extern const struct LinkedListClass
     struct ListNode (*pop)(struct LinkedList* this);
     // Add a node at the start of the linked-list
     int (*unshift)(struct LinkedList* this, int data);
-    // insert a node at `index` in linked-list then returns new linked-list's length
-    int (*insert)(struct LinkedList* this, int index, int data);
+    // insert a node before a node in linked-list
+    int (*insertBefore)(struct LinkedList* this, int index, int data);
+    // insert a node after a node in linked-list
+    int (*insertAfter)(struct LinkedList* this, int index, int data);
     // remove a node at the start of the linked-list then returns that node
     struct ListNode (*shift)(struct LinkedList* this);
 } LinkedList;

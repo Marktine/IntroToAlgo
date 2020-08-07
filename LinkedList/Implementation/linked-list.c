@@ -1,3 +1,11 @@
+/*
+ * TODOS:
+ *      - Implement insert method
+ *      - Implement pop method
+ *      - Implement unshift
+ *      - Implement shift
+ * */
+
 #include "stdio.h"
 #include "stdlib.h"
 #include "linked-list.h"
@@ -59,10 +67,48 @@ static int freeList(struct LinkedList* this)
     }
 }
 
+static int insertBefore(struct LinkedList* this, int index, int data) {
+    int i = 0;
+    struct ListNode* newNode = ListNode.newNode(data);
+    struct ListNode* tmp = this->phead;
+    while(i != index && tmp->next != NULL) {
+        if (i == index) {
+            struct ListNode* prev_node = tmp->prev;
+            tmp->prev = newNode;
+            newNode->next = tmp;
+            newNode->prev = prev_node;
+        } else {
+            tmp = tmp->next;
+            i++;
+        }
+    }
+}
+
+static int insertAfter(struct LinkedList* this, int index, int data) {
+    
+}
+
+static struct ListNode pop(struct LinkedList* this) {
+
+}
+
+static int unshift(struct LinkedList* this, int data) {
+
+}
+
+static int shift(struct LinkedList* this, int data) {
+
+}
+
 const struct LinkedListClass LinkedList =
 {
-    .newList=&newList,
+    .pop=&pop,
     .push=&push,
+    .shift=&shift,
     .travel=&travel,
+    .newList=&newList,
+    .unshift=&unshift,
     .freeList=&freeList,
+    .insertAfter=&insertAfter,
+    .insertBefore=&insertBefore,
 };
