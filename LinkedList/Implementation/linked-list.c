@@ -36,6 +36,8 @@ static int push(struct LinkedList* this,int data)
             this->ptail = newNode;
         }
     }
+    // Increase length by 1 when item is successfully added
+    this->length++;
     return 1;
 }
 
@@ -60,32 +62,38 @@ static int freeList(struct LinkedList* this)
 {
     if (this == NULL) return 0;
     struct ListNode* tmp;
+    this->length = 0;
     while(this->phead != NULL) {
         tmp = this->phead;
         this->phead = this->phead->next;
-        free(tmp);
+        ListNode.freeNode(tmp);
     }
+    return 1;
 }
 
-static int insertBefore(struct LinkedList* this, int index, int data) {
-    int i = 0;
-    struct ListNode* newNode = ListNode.newNode(data);
-    struct ListNode* tmp = this->phead;
-    while(i != index && tmp->next != NULL) {
-        if (i == index) {
-            struct ListNode* prev_node = tmp->prev;
-            tmp->prev = newNode;
-            newNode->next = tmp;
-            newNode->prev = prev_node;
-        } else {
-            tmp = tmp->next;
-            i++;
-        }
+static int insertBefore(struct LinkedList* this, struct ListNode* node, int data)
+{
+    if (node != NULL) {
+        struct ListNode* newNode = ListNode.newNode(data);
+        node->prev->next = newNode;
+        newNode->next = node;
+        this->length++;
+        return this->length;
     }
+    return 0;
 }
 
-static int insertAfter(struct LinkedList* this, int index, int data) {
-    
+static int insertAfter(struct LinkedList* this, struct ListNode* node, int data)
+{
+    if (node != NULL) {
+        struct ListNode* newNode = ListNode.newNode(data);
+        node->next->prev = newNode;
+        newNode->next = node->next;
+        node->next = newNode;
+        this->length++;
+        return this->length;
+    } 
+    return 0;
 }
 
 static struct ListNode pop(struct LinkedList* this) {
@@ -100,15 +108,36 @@ static int shift(struct LinkedList* this, int data) {
 
 }
 
+static int getLength(struct LinkedList* this) {
+    return this->length;
+}
+
+static struct ListNode* getNode(struct LinkedList* this, int index) {
+    if (index >= 0 && index < this->length) {
+        struct ListNode* temp = this->phead;
+        int i = 0;
+        while(temp != NULL) {
+            if (i == index) {
+                return temp;
+            }
+            i++;
+            temp = temp->next;
+        }
+    }
+    return NULL;
+}
+
 const struct LinkedListClass LinkedList =
 {
-    .pop=&pop,
+    //.pop=&pop,
     .push=&push,
-    .shift=&shift,
+    //.shift=&shift,
     .travel=&travel,
+    .getNode=&getNode,
     .newList=&newList,
-    .unshift=&unshift,
+    //.unshift=&unshift,
     .freeList=&freeList,
+    .getLength=&getLength,
     .insertAfter=&insertAfter,
     .insertBefore=&insertBefore,
 };

@@ -11,4 +11,14 @@ static struct ListNode* newNode(int data)
     return n;
 }
 
-const struct ListNodeClass ListNode = {.newNode=&newNode};
+static void freeNode(struct ListNode* this) {
+    if (this != NULL) {
+        this->value = 0;
+        free(this);
+    }
+}
+
+const struct ListNodeClass ListNode = {
+    .newNode=&newNode,
+    .freeNode=&freeNode,
+};

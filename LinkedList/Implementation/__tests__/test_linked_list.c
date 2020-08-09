@@ -12,8 +12,14 @@ int main() {
         LinkedList.push(l, 20);
         // push 3rd item and more
         LinkedList.push(l, 40);
-        LinkedList.travel(l);
-        LinkedList.freeList(l);
+        struct ListNode* n = LinkedList.getNode(l, 2);
+        if (n != NULL) {
+            LinkedList.insertBefore(l, n, 100);
+            LinkedList.travel(l);
+            LinkedList.freeList(l);
+        } else {
+            printf("Failed to get node\n");
+        }
     } else {
         printf("cannot init linked-list");
     }
