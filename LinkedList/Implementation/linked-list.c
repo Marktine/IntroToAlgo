@@ -41,15 +41,22 @@ static int push(struct LinkedList* this,int data)
     return 1;
 }
 
+// travel through the linked-list and print out node's value
 static void travel(struct LinkedList* this)
 {
-    if (this != NULL) {
-        if (this->phead != NULL) {
-        if (this->phead == this->ptail) {
-            printf("%d", this->phead->value);
-        } else {
-            struct ListNode* t = this->phead;
-                while(t != NULL) {
+    if (this != NULL)
+    {
+        if (this->phead != NULL)
+        {
+            if (this->phead == this->ptail)
+            {
+                printf("%d", this->phead->value);
+            } 
+            else
+            {
+                struct ListNode* t = this->phead;
+                while(t != NULL)
+                {
                     printf("%d\n", t->value);
                     t = t->next;
                 }
@@ -73,9 +80,10 @@ static int freeList(struct LinkedList* this)
 
 static int insertBefore(struct LinkedList* this, struct ListNode* node, int data)
 {
-    if (node != NULL) {
+    if (this != NULL && this->phead != NULL && node != NULL) {
         struct ListNode* newNode = ListNode.newNode(data);
         node->prev->next = newNode;
+        newNode->prev = node->prev;
         newNode->next = node;
         this->length++;
         return this->length;
@@ -85,7 +93,7 @@ static int insertBefore(struct LinkedList* this, struct ListNode* node, int data
 
 static int insertAfter(struct LinkedList* this, struct ListNode* node, int data)
 {
-    if (node != NULL) {
+    if (this != NULL && this->phead != NULL && node != NULL) {
         struct ListNode* newNode = ListNode.newNode(data);
         node->next->prev = newNode;
         newNode->next = node->next;
@@ -96,8 +104,19 @@ static int insertAfter(struct LinkedList* this, struct ListNode* node, int data)
     return 0;
 }
 
-static struct ListNode pop(struct LinkedList* this) {
-
+static struct ListNode* pop(struct LinkedList* this) {
+    if (this != NULL && this->ptail != NULL) {
+        struct ListNode* old_tail = this->ptail;
+        struct ListNode* prev_tail = this->ptail->prev;
+        prev_tail->next = NULL;
+        this->ptail = prev_tail;
+        this->length--;
+        return old_tail;
+    }
+    else
+    {
+        return NULL;
+    }
 }
 
 static int unshift(struct LinkedList* this, int data) {
@@ -129,7 +148,7 @@ static struct ListNode* getNode(struct LinkedList* this, int index) {
 
 const struct LinkedListClass LinkedList =
 {
-    //.pop=&pop,
+    .pop=&pop,
     .push=&push,
     //.shift=&shift,
     .travel=&travel,
