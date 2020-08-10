@@ -85,6 +85,7 @@ static int insertBefore(struct LinkedList* this, struct ListNode* node, int data
         node->prev->next = newNode;
         newNode->prev = node->prev;
         newNode->next = node;
+        node->prev = newNode;
         this->length++;
         return this->length;
     }
@@ -95,8 +96,9 @@ static int insertAfter(struct LinkedList* this, struct ListNode* node, int data)
 {
     if (this != NULL && this->phead != NULL && node != NULL) {
         struct ListNode* newNode = ListNode.newNode(data);
-        node->next->prev = newNode;
+        newNode->prev = node;
         newNode->next = node->next;
+        node->next->prev = newNode;
         node->next = newNode;
         this->length++;
         return this->length;
