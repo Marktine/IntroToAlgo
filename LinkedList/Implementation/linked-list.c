@@ -1,7 +1,5 @@
 /*
  * TODOS:
- *      - Implement insert method
- *      - Implement pop method
  *      - Implement unshift
  *      - Implement shift
  * */
