@@ -33,6 +33,6 @@ extern const struct LinkedListClass
     // insert a node after a node in linked-list
     int (*insertAfter)(struct LinkedList* this, struct ListNode* node, int data);
     // remove a node at the start of the linked-list then returns that node
-    struct ListNode (*shift)(struct LinkedList* this);
+    struct ListNode* (*shift)(struct LinkedList* this);
 } LinkedList;
 #endif

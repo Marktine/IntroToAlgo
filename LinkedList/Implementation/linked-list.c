@@ -1,7 +1,6 @@
 /*
  * TODOS:
- *      - Implement unshift
- *      - Implement shift
+ * 
  * */
 
 #include "stdio.h"
@@ -120,11 +119,40 @@ static struct ListNode* pop(struct LinkedList* this) {
 }
 
 static int unshift(struct LinkedList* this, int data) {
-
+    if (this != NULL && this->phead != NULL) {
+        struct ListNode* newNode = ListNode.newNode(data);
+        struct ListNode* head = this->phead;
+        if (newNode != NULL) {
+            newNode->prev = NULL;
+            newNode->next = head;
+            head->prev = newNode;
+            this->phead = newNode;
+            this->length++;
+            return this->length;
+        } else {
+            printf("Cannot create new node");
+        }
+    }
+    return 0;
 }
 
-static int shift(struct LinkedList* this, int data) {
-
+static struct ListNode* shift(struct LinkedList* this) {
+    if (this != NULL && this->phead != NULL) {
+        struct ListNode* oldHead = this->phead;
+        struct ListNode* next_node = oldHead->next;
+        // linked-list just has one element
+        if (this->phead == this->ptail) {
+            this->phead = NULL;
+            this->ptail = NULL;
+        } else {
+            oldHead->next = NULL;
+            next_node->prev = NULL;
+            this->phead = next_node;
+        }
+        this->length--;
+        return oldHead;
+    }
+    return NULL;
 }
 
 static int getLength(struct LinkedList* this) {
@@ -150,11 +178,11 @@ const struct LinkedListClass LinkedList =
 {
     .pop=&pop,
     .push=&push,
-    //.shift=&shift,
+    .shift=&shift,
     .travel=&travel,
     .getNode=&getNode,
     .newList=&newList,
-    //.unshift=&unshift,
+    .unshift=&unshift,
     .freeList=&freeList,
     .getLength=&getLength,
     .insertAfter=&insertAfter,
